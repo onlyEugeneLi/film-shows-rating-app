@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Films & TV Shows Ratings App</title>
+  <style>
+    /* Basic page styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f5;
+      padding: 20px;
+    }
+
+    /* Container for the form */
+    form {
+      background: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Each form field */
+    label {
+      display: block;  /* Makes label appear above the input */
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;   /* Full width */
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Submit button */
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Films & TV shows ratings form</h2>
+
+<!-- Start of the review form -->
+<form id="reviewForm">
+  
+  <!-- Show title -->
+  <label for="title">Show Title:</label>
+  <input type="text" id="title" name="title" required>
+
+  <!-- Show type dropdown -->
+  <label for="type">Show Type:</label>
+  <select id="type" name="type" >
+    <option value="">--Please choose--</option>
+    <option value="film">Film</option>
+    <option value="series">Series</option>
+    <option value="other">Other</option>
+  </select>
+
+  <!-- Score slider -->
+  <label for="score">Score (1-10):</label>
+  <input type="range" id="score" name="score" min="1" max="10" value="5">
+  
+  <!-- Watched date (min/max limit, default today) -->
+  <label for="watchedDate">Watched Date:</label>
+  <input type="date" id="watchedDate" name="watchedDate" min="2005-01-01">
+  
+  <!-- Release year -->
+  <label for="releaseYear">Release Year:</label>
+  <input type="number" id="releaseYear" name="releaseYear" min="1888" max="2025">
+
+  <!-- Submit button -->
+  <button type="submit">Submit Review</button>
+</form>
+
+<script>
+  // --- Set watched date default to today ---
+  const today = new Date();
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
+
+  const watchedDateInput = document.getElementById('watchedDate');
+//   watchedDateInput.value = today.toISOString().split('T')[0]; // Set Default value to today
+  watchedDateInput.max = nextDay.toISOString().split('T')[0]; // Max allowed = tomorrow
+
+  // --- Handle form submit ---
+  document.getElementById('reviewForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Stop page reload
+
+    // Collect form data
+    const data = {
+      title: document.getElementById('title').value,
+      type: document.getElementById('type').value,
+      score: parseInt(document.getElementById('score').value),
+      watchedDate: document.getElementById('watchedDate').value || null,
+      releaseYear: document.getElementById('releaseYear').value ? parseInt(document.getElementById('releaseYear').value) : null,
+      // clientTS: new Date().toISOString()
+    };
+
+    // Put fetch options in a variable
+    const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+    };
+
+    // Send to API Gateway (replace with your actual URL)
+    fetch('https://mcaidxukt0.execute-api.us-east-2.amazonaws.com/mvp/', requestOptions)
+    .then(response => response.text())
+    .then(result => alert(JSON.parse(result).body))
+    .catch(err => alert('Error submitting review.'))
+    });
+</script>
+
+</body>
+</html>
