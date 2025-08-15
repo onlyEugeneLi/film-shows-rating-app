@@ -5,8 +5,8 @@ Similar application: Contact form
 Objectives:
 
 - Host a static webpage
-- A way to invoke the math functionality
-- A way to process request (calculation, logic)
+- A way to invoke the data handling functionality
+- A way to process request (save data, serve JSON response)
 - Database to store / return the result
 - A way to handle permissions
 
