@@ -12,35 +12,35 @@ terraform {
   required_version = "~> 1.12"
   # # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
   #   backend "s3" {
-  #     bucket          = "dev-tf-state-backend-bucket-143056"
-  #     key             = "state/terraform.tfstate" # directory path
-  #     region          = "us-east-2"
+  #     bucket          = local.s3_backend_bucket_name
+  #     key             = local.s3_backend_state_key # directory path
+  #     region          = var.aws_region
   #     # dynamodb_table  = "backend" # Deprecated
-  #     use_lockfile    = true
-  #     encrypt = true
+  #     use_lockfile    = local.s3_backend_use_lockfile
+  #     encrypt         = local.s3_backend_encrypt
   #   }
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.8"
+      source          = "hashicorp/aws"
+      version         = "~> 6.8"
     }
   }
 }
 
-resource "aws_s3_bucket" "dev_s3_backend_bucket" {
-  bucket        = "dev-tf-state-backend-bucket-143056"
+resource "aws_s3_bucket" "app_s3_backend_bucket" {
+  bucket        = local.s3_backend_bucket_name
   force_destroy = true
 }
 
-resource "aws_s3_bucket_versioning" "dev_s3_backend_bucket_vesioning" {
-  bucket = aws_s3_bucket.dev_s3_backend_bucket.id
+resource "aws_s3_bucket_versioning" "app_s3_backend_bucket_vesioning" {
+  bucket = aws_s3_bucket.app_s3_backend_bucket.id
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "dev_s3_backend_bucket_server_encryption" {
-  bucket = aws_s3_bucket.dev_s3_backend_bucket.bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "app_s3_backend_bucket_server_encryption" {
+  bucket = aws_s3_bucket.app_s3_backend_bucket.bucket
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
