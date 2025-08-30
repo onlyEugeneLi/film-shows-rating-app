@@ -41,3 +41,37 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 1. EC2 Migration
 1. VPN access via home network only
 1. Add Chinese language webpage and link to switch between languages
+
+
+# Terraform configurations
+
+**Configuration Directory Structure**
+
+terraform/
+|--- main.tf
+|--- variables.tf
+|--- provider.tf
+|--- module/
+    |--- web-app
+        |--- amplify.tf
+        |--- api-gateway.tf
+        |--- dynamodb.tf
+        |--- iam.tf
+        |--- lambda.tf
+
+## Amplify App
+
+## S3 Terraform Backend Bucket
+
+Set up Terraform remote backend state storage in S3 bucket
+
+backend.tf
+
+locals.tf
+
+## Lambda function
+
+## API Gateway
+
+## DynamoDB Table for Web App Data
+

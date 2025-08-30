@@ -8,23 +8,25 @@
 # - AppSync GraphQL Authentication Type ('AMAZON_COGNITO_USER_POOLS')
 # - Relevant S3 Buckets
 
-resource "aws_amplify_app" "film-tv-shows-ratings-app" {
+resource "aws_amplify_app" "amplify_app" {
   count                    = var.create_amplify_app ? 1 : 0
   name                     = var.app_name
-  repository               = var.tca_create_codecommit_repo ? aws_codecommit_repository.tca_codecommit_repo[0].clone_url_http : var.tca_existing_repo_url
+  repository               = var.github_repository_url
   enable_branch_auto_build = true
 
-  # OPTIONAL - Necessary if not using oauth_token or access_token (used for GitLab and GitHub repos)
+  # used for GitHub repos
   iam_service_role_arn = aws_iam_role.tca_amplify_codecommit.arn
-  access_token         = var.lookup_ssm_github_access_token ? data.aws_ssm_parameter.ssm_github_access_token[0].name : var.github_access_token // optional, only needed if using github repo
+  access_token         = var.github_access_token // needed for accessing github repo
 
-  build_spec = file("${path.root}/../amplify.yml")
+  build_spec = file("${path.root}/../module/web-app/amplify-spec.yml")
   # Redirects for Single Page Web Apps (SPA)
   # https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa
+  # The rewrite makes it appear to the user that they have arrived at the original address
   custom_rule {
-    source = "</^[^.]+$|\\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf|map|json)$)([^.]+$)/>"
+    source = "/<*>"
     status = "200"
     target = "/index.html"
+    condition = null
   }
 
   environment_variables = {
