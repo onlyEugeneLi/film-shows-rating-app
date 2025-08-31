@@ -11,7 +11,7 @@ resource "aws_amplify_app" "amplify_app" {
   # used for GitHub repos
   access_token         = var.github_access_token // needed for accessing github repo
 
-  build_spec = file("${path.root}/../module/web-app/amplify-spec.yml")
+  build_spec = file("${path.root}/../amplify-spec.yml")
   # Redirects for Single Page Web Apps (SPA)
   # https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa
   # The rewrite makes it appear to the user that they have arrived at the original address
