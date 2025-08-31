@@ -23,7 +23,7 @@ resource "aws_amplify_app" "amplify_app" {
   }
 }
 
-resource "aws_amplify_branch" "tca_amplify_branch_dev" {
+resource "aws_amplify_branch" "amplify_branch_dev" {
   count       = var.create_amplify_branch_dev ? 1 : 0
   app_id      = aws_amplify_app.amplify_app[0].id
   branch_name = var.amplify_branch_dev_name
