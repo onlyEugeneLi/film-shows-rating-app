@@ -37,3 +37,11 @@ variable "amplify_branch_dev_stage" {
   default = "DEVELOPMENT"
 
 }
+
+# - Lambda - 
+
+variable "lambda_function_name" {
+  type = string
+  default = "write-web-input-to-dynamodb"
+  description = "The name of the lambda function that stores data input from web interface to DynamoDB table."
+}

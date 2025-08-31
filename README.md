@@ -80,6 +80,14 @@ locals.tf
 
 ## Lambda function
 
+Create IAM role for Lambda function
+
+Create assume role data block 
+
+Create zip file using archive_file data block to upload code to Lambda function
+
+Hash the zip file to force update when code changes
+
 ## API Gateway
 
 ## DynamoDB Table for Web App Data
