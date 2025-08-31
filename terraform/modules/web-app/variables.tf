@@ -21,50 +21,19 @@ variable "github_access_token" {
   description = "Optional GitHub access token. Only required if using GitHub repo."
 
 }
-variable "tca_amplify_app_framework" {
-  type    = string
-  default = "React"
 
-}
-variable "create_tca_amplify_branch_main" {
-  type        = bool
-  default     = true
-  description = "Conditional creation of main branch for amplify app"
-
-}
-variable "tca_amplify_branch_main_name" {
-  type    = string
-  default = "main"
-}
-variable "tca_amplify_branch_main_stage" {
-  type    = string
-  default = "PRODUCTION"
-
-}
-variable "create_tca_amplify_branch_dev" {
+variable "create_amplify_branch_dev" {
   type        = bool
   default     = true
   description = "Conditional creation of dev branch for amplify app"
 
 }
-variable "tca_amplify_branch_dev_name" {
+variable "amplify_branch_dev_name" {
   type    = string
   default = "dev"
 }
-variable "tca_amplify_branch_dev_stage" {
+variable "amplify_branch_dev_stage" {
   type    = string
   default = "DEVELOPMENT"
-
-}
-
-variable "create_tca_amplify_domain_association" {
-  type    = bool
-  default = false
-
-}
-variable "tca_amplify_app_domain_name" {
-  type        = string
-  default     = "example.com"
-  description = "The name of your domain. Ex. naruto.ninja"
 
 }
