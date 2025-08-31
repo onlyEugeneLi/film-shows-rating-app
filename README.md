@@ -62,6 +62,14 @@ terraform/
 
 ## Amplify App
 
+Github repo link
+
+branch
+
+rewrite and redirect rules
+
+github access token variable
+
 ## S3 Terraform Backend Bucket
 
 Set up Terraform remote backend state storage in S3 bucket
