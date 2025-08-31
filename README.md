@@ -46,18 +46,19 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 # Terraform configurations
 
 **Configuration Directory Structure**
-
-terraform/
+```
+terraform/ 
 |--- main.tf
 |--- variables.tf
 |--- provider.tf
-|--- module/
+|--- module/ 
     |--- web-app
         |--- amplify.tf
         |--- api-gateway.tf
         |--- dynamodb.tf
         |--- iam.tf
         |--- lambda.tf
+```
 
 ## Amplify App
 
