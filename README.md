@@ -70,6 +70,8 @@ rewrite and redirect rules
 
 github access token variable
 
+Apmlify specification file: amplify.yml
+
 ## S3 Terraform Backend Bucket
 
 Set up Terraform remote backend state storage in S3 bucket
@@ -82,7 +84,56 @@ locals.tf
 
 Create IAM role for Lambda function
 
-Create assume role data block 
+Create assume role data block: which format to use?
+
+Format 1:
+```
+resource "aws_iam_role" "lambda_exec" {
+  name = "serverless_lambda"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Sid    = ""
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+```
+
+Format 2:
+
+```
+# Reference IAM role for Lambda execution from AWS template
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+# Create a lambda function execution role 
+resource "aws_iam_role" "lambda_role" {
+  name               = "lambda_execution_role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+```
 
 Create zip file using archive_file data block to upload code to Lambda function
 
