@@ -45,3 +45,5 @@ variable "lambda_function_name" {
   default = "write-web-input-to-dynamodb"
   description = "The name of the lambda function that stores data input from web interface to DynamoDB table."
 }
+
+# - API Gateway -
