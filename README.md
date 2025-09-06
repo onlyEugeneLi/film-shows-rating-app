@@ -84,6 +84,8 @@ locals.tf
 
 Create IAM role for Lambda function
 
+> Need permission to write to DynamoDB table!
+
 Create assume role data block: which format to use?
 
 Format 1:
@@ -140,6 +142,14 @@ Create zip file using archive_file data block to upload code to Lambda function
 Hash the zip file to force update when code changes
 
 ## API Gateway
+
+> Embed the API gateway URL in the `index.html` JavaScript code!
+
+Create API gateway configuraiton
+
+creating the API Gateway REST API, resources, methods (including POST for the form data and OPTIONS for CORS), and integrations with the Lambda function
+
+API Gateway deployment
 
 ## DynamoDB Table for Web App Data
 
