@@ -49,6 +49,12 @@ resource "aws_iam_role" "lambda_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+# Policy attachment
+resource "aws_iam_role_policy_attachment" "lambda_exec_role_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role = aws_iam_role.lambda_role.name
+}
+
 # Package the Lambda function code
 data "archive_file" "lambda_code" {
   type        = "zip"
