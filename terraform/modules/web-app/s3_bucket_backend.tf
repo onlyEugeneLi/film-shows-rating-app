@@ -27,6 +27,7 @@ terraform {
   }
 }
 
+# Need to remove this in CD pipeline branch 
 resource "aws_s3_bucket" "app_s3_backend_bucket" {
   bucket        = local.s3_backend_bucket_name
   force_destroy = true
