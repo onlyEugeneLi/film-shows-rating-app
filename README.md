@@ -51,6 +51,8 @@ Fix: AWS Amplify does not pick up HTML content from GitHub repo
 
 Use CD pipeline to manage S3 backend bucket for Terraform state
 
+Test connection between API Gateway and Lambda function, DynamoDB table
+
 **Configuration Directory Structure**
 ```
 terraform/ 
