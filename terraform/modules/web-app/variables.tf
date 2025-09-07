@@ -18,6 +18,7 @@ variable "github_repository_url" {
 }
 variable "github_access_token" {
   type        = string
+  default = null
   description = "Optional GitHub access token. Only required if using GitHub repo."
 
 }
