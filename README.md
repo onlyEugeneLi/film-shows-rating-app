@@ -37,13 +37,17 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 1. ✅ Successful infra deployment
 1. ✅ Lambda function python API backend code
 1. ✅ Test run app
-1. CD pipeline
+1. CD pipeline: deploy code changes automatically
 1. EC2 Migration
 1. VPN access via home network only
 1. Add Chinese language webpage and link to switch between languages
 
 
 # Terraform configurations
+
+## Errors
+
+AWS Amplify does not pick up HTML content from GitHub repo
 
 **Configuration Directory Structure**
 ```
@@ -141,6 +145,12 @@ Create zip file using archive_file data block to upload code to Lambda function
 
 Hash the zip file to force update when code changes
 
+### IAM JSON Policy element reference
+
+The Statement element can contain a single statement or an array of individual statements. Each individual statement block must be enclosed in curly braces `{ }`. For multiple statements, the array must be enclosed in square brackets `[ ]`.
+
+
+
 ## API Gateway
 
 > Embed the API gateway URL in the `index.html` JavaScript code!
@@ -153,3 +163,20 @@ API Gateway deployment
 
 ## DynamoDB Table for Web App Data
 
+Create DynamoDB table with primary key
+
+Add attributes 
+
+> NEXT: add state locking 
+
+# CD pipeline
+
+## S3 backend state
+
+Command to deploy S3 bucket for Terraform backend state (used by resource in s3_bucket_backend.tf)
+
+## Link HTML script to API Gateway URL
+
+How to include URL in HTML JS script?
+1. Create output variable in api_gateway.tf
+2. Reference the output variable in the main.tf file where the module is called
