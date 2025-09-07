@@ -10,25 +10,26 @@ resource "aws_api_gateway_rest_api" "api-gtw-invoke-lambda" {
   }
 }
 
-# API Gateway resource creation
-resource "aws_api_gateway_resource" "api-gtw-invoke-lambda-resource" {
-  parent_id   = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
-  path_part   = "/"
-  rest_api_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
-}
+# If using root path, don't need to create a new API gateway resource
+# # API Gateway resource creation
+# resource "aws_api_gateway_resource" "api-gtw-invoke-lambda-resource" {
+#   parent_id   = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
+#   path_part   = "/"
+#   rest_api_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
+# }
 
 # API method
 resource "aws_api_gateway_method" "api-gtw-invoke-lambda-method" {
   authorization = "NONE"
   http_method   = "POST"
-  resource_id   = aws_api_gateway_resource.api-gtw-invoke-lambda-resource.id
+  resource_id   = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
   rest_api_id   = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
 }
 
 # Custom response
 resource "aws_api_gateway_method_response" "api-gtw-invoke-lambda-method-response" {
   rest_api_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
-  resource_id = aws_api_gateway_resource.api-gtw-invoke-lambda-resource.id
+  resource_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
   http_method = aws_api_gateway_method.api-gtw-invoke-lambda-method.http_method
   status_code = "200"
 
@@ -44,7 +45,7 @@ resource "aws_api_gateway_method_response" "api-gtw-invoke-lambda-method-respons
 # Connect to Lambda
 resource "aws_api_gateway_integration" "api-gtw-invoke-lambda-integration" {
   http_method             = aws_api_gateway_method.api-gtw-invoke-lambda-method.http_method
-  resource_id             = aws_api_gateway_resource.api-gtw-invoke-lambda-resource.id
+  resource_id             = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
   rest_api_id             = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
   type                    = "AWS_PROXY"
   integration_http_method = "POST"
@@ -54,7 +55,7 @@ resource "aws_api_gateway_integration" "api-gtw-invoke-lambda-integration" {
 # Integration response
 resource "aws_api_gateway_integration_response" "api-gtw-invoke-lambda-integration-response" {
   rest_api_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
-  resource_id = aws_api_gateway_resource.api-gtw-invoke-lambda-resource.id
+  resource_id = aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id
   http_method = aws_api_gateway_method.api-gtw-invoke-lambda-method.http_method
   status_code = aws_api_gateway_method_response.api-gtw-invoke-lambda-method-response.status_code
 
@@ -81,7 +82,7 @@ resource "aws_api_gateway_deployment" "api-gtw-invoke-lambda-deployment" {
 
   triggers = {
     redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.api-gtw-invoke-lambda-resource.id,
+      aws_api_gateway_rest_api.api-gtw-invoke-lambda.root_resource_id,
       aws_api_gateway_method.api-gtw-invoke-lambda-method.id,
       aws_api_gateway_integration.api-gtw-invoke-lambda-integration.id
     ]))
