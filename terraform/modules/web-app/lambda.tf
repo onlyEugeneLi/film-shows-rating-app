@@ -3,11 +3,11 @@
 
 resource "aws_lambda_function" "lambda-function-web-input-dynamodb" {
   # Source code location
-  filename = data.archive_file.lambda_code
+  filename = data.archive_file.lambda_code.output_path
 
   # Lambda basic metadata
   function_name = var.lambda_function_name
-  role          = aws_iam_role.lambda_role
+  role          = aws_iam_role.lambda_role.arn
 
   runtime = "python3.12"
   handler = "backend-lambda.lambda_handler" # The function intended to be triggered by the API -- "<code_file_name>.<function_name>"
@@ -75,6 +75,6 @@ resource "aws_iam_role_policy_attachment" "lambda_exec_role_attachment" {
 # Package the Lambda function code
 data "archive_file" "lambda_code" {
   type        = "zip"
-  source_file = "${path.module}/lambda-functions/"
+  source_file = "${path.module}/lambda-functions/backend-lambda.py"
   output_path = "${path.module}/lambda-functions/backend-lambda.zip"
 }
