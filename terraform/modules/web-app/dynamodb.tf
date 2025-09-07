@@ -10,29 +10,34 @@ resource "aws_dynamodb_table" "dynamodb-table" {
 
   # Columns
   attribute {
-    name = "Title"
+    name = "ID"
     type = "S"
   }
-  attribute {
-    name = "Type"
-    type = "S"
-  }
-  attribute {
-    name = "Score"
-    type = "N"
-  }
-  attribute {
-    name = "WatchedDate"
-    type = "S"
-  }
-  attribute {
-    name = "ReleaseYear"
-    type = "S"
-  }
-  attribute {
-    name = "requestTime"
-    type = "S"
-  }
+  # # No need to specify a schema, because NoSQL database is flexible
+  # attribute {
+  #   name = "Title"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "Type"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "Score"
+  #   type = "N"
+  # }
+  # attribute {
+  #   name = "WatchedDate"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "ReleaseYear"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "requestTime"
+  #   type = "S"
+  # }
 
   tags = {
     name = "film-tracker-app-table"
