@@ -8,25 +8,6 @@
 # Here we just manually un-comment backend migration code when S3 and dynamoDB resource provision code are executed. 
 # We can explore automated options in a branch 
 
-terraform {
-  required_version = "~> 1.12"
-  # # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
-  #   backend "s3" {
-  #     bucket          = local.s3_backend_bucket_name
-  #     key             = local.s3_backend_state_key # directory path
-  #     region          = var.aws_region
-  #     # dynamodb_table  = "backend" # Deprecated
-  #     use_lockfile    = local.s3_backend_use_lockfile
-  #     encrypt         = local.s3_backend_encrypt
-  #   }
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.8"
-    }
-  }
-}
-
 # Need to remove this in CD pipeline branch 
 resource "aws_s3_bucket" "app_s3_backend_bucket" {
   bucket        = local.s3_backend_bucket_name
