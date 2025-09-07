@@ -41,6 +41,23 @@ data "aws_iam_policy_document" "assume_role" {
 
     actions = ["sts:AssumeRole"]
   }
+
+  # Provide Write permission to DynamoDB table
+  statement {
+    sid = "ReadWriteDynamoDBTable"
+    effect = "Allow"
+    actions = [
+     "dynamodb:BatchGetItem",
+     "dynamodb:GetItem",
+     "dynamodb:Query",
+     "dynamodb:Scan",
+     "dynamodb:BatchWriteItem",
+     "dynamodb:PutItem",
+     "dynamodb:UpdateItem"
+    ]
+
+    resources = [aws_dynamodb_table.dynamodb-table.arn]
+  }
 }
 
 # Create a lambda function execution role 
