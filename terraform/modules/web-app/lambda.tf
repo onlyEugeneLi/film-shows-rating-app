@@ -41,23 +41,6 @@ data "aws_iam_policy_document" "assume_role" {
 
     actions = ["sts:AssumeRole"]
   }
-
-  # Provide Write permission to DynamoDB table
-  statement {
-    sid    = "ReadWriteDynamoDBTable"
-    effect = "Allow"
-    actions = [
-      "dynamodb:BatchGetItem",
-      "dynamodb:GetItem",
-      "dynamodb:Query",
-      "dynamodb:Scan",
-      "dynamodb:BatchWriteItem",
-      "dynamodb:PutItem",
-      "dynamodb:UpdateItem"
-    ]
-
-    resources = [aws_dynamodb_table.dynamodb-table.arn]
-  }
 }
 
 # Create a lambda function execution role 
@@ -70,6 +53,34 @@ resource "aws_iam_role" "lambda_role" {
 resource "aws_iam_role_policy_attachment" "lambda_exec_role_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.lambda_role.name
+}
+
+# Provide Write permission to DynamoDB table
+resource "aws_iam_role_policy" "lambda_write_dynamodb_policy" {
+  name = "lambda-write-dynamodb-policy"
+  role = aws_iam_role.lambda_role.id
+
+  policy = <<EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "LambdaReadWriteDynamoDBTable",
+          "Effect": "Allow",
+          "Action": [
+            "dynamodb:BatchGetItem",
+            "dynamodb:GetItem",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:BatchWriteItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource": ["${aws_dynamodb_table.dynamodb-table.arn}"]
+        }
+      ]
+    }
+  EOF
 }
 
 # Package the Lambda function code
