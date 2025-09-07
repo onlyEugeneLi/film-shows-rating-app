@@ -2,29 +2,29 @@
 # --- Main: Lambda function resource ---
 
 resource "aws_lambda_function" "lambda-function-web-input-dynamodb" {
-    # Source code location
-    filename = data.archive_file.lambda_code
+  # Source code location
+  filename = data.archive_file.lambda_code
 
-    # Lambda basic metadata
-    function_name = var.lambda_function_name
-    role = aws_iam_role.lambda_role
+  # Lambda basic metadata
+  function_name = var.lambda_function_name
+  role          = aws_iam_role.lambda_role
 
-    runtime = "python3.12"
-    handler = "backend-lambda.lambda_handler" # The function intended to be triggered by the API -- "<code_file_name>.<function_name>"
+  runtime = "python3.12"
+  handler = "backend-lambda.lambda_handler" # The function intended to be triggered by the API -- "<code_file_name>.<function_name>"
 
-    source_code_hash = data.archive_file.lambda_code.output_base64sha256 # attribute will change whenever you update the code contained in the archive, which lets Lambda know that there is a new version of your code available
+  source_code_hash = data.archive_file.lambda_code.output_base64sha256 # attribute will change whenever you update the code contained in the archive, which lets Lambda know that there is a new version of your code available
 
-    environment {
-      variables = {
-        ENVIRONMENT = "dev"
-        LOG_LEVEL = "info"
-      }
+  environment {
+    variables = {
+      ENVIRONMENT = "dev"
+      LOG_LEVEL   = "info"
     }
+  }
 
-    tags = {
-      Environment = "dev"
-      Application = "film-shows-rating-app"
-    }
+  tags = {
+    Environment = "dev"
+    Application = "film-shows-rating-app"
+  }
 }
 
 # --- Dependencies: arguments configuration --- 
@@ -44,16 +44,16 @@ data "aws_iam_policy_document" "assume_role" {
 
   # Provide Write permission to DynamoDB table
   statement {
-    sid = "ReadWriteDynamoDBTable"
+    sid    = "ReadWriteDynamoDBTable"
     effect = "Allow"
     actions = [
-     "dynamodb:BatchGetItem",
-     "dynamodb:GetItem",
-     "dynamodb:Query",
-     "dynamodb:Scan",
-     "dynamodb:BatchWriteItem",
-     "dynamodb:PutItem",
-     "dynamodb:UpdateItem"
+      "dynamodb:BatchGetItem",
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem"
     ]
 
     resources = [aws_dynamodb_table.dynamodb-table.arn]
@@ -69,7 +69,7 @@ resource "aws_iam_role" "lambda_role" {
 # Policy attachment
 resource "aws_iam_role_policy_attachment" "lambda_exec_role_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  role = aws_iam_role.lambda_role.name
+  role       = aws_iam_role.lambda_role.name
 }
 
 # Package the Lambda function code

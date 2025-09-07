@@ -1,9 +1,9 @@
 # DynamoDB table to store input from web form
 
 resource "aws_dynamodb_table" "dynamodb-table" {
-  name = "film-tracker-app-table"
-  billing_mode = "PROVISIONED"
-  read_capacity = 5
+  name           = "film-tracker-app-table"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 5
   write_capacity = 5
 
   hash_key = "ID"
