@@ -98,7 +98,7 @@ resource "aws_api_gateway_deployment" "api-gtw-invoke-lambda-deployment" {
 
 # Create a stage
 resource "aws_api_gateway_stage" "api-gtw-invoke-lambda-stage" {
-  deployment_id = aws_api_gateway_deployment.api-gtw-invoke-lambda-deployment
+  deployment_id = aws_api_gateway_deployment.api-gtw-invoke-lambda-deployment.id
   rest_api_id   = aws_api_gateway_rest_api.api-gtw-invoke-lambda.id
   stage_name    = "dev"
 }
