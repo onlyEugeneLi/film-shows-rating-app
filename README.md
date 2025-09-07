@@ -45,9 +45,11 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 
 # Terraform configurations
 
-## Errors
+## Next steps
 
-AWS Amplify does not pick up HTML content from GitHub repo
+Fix: AWS Amplify does not pick up HTML content from GitHub repo
+
+Use CD pipeline to manage S3 backend bucket for Terraform state
 
 **Configuration Directory Structure**
 ```
