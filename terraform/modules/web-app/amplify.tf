@@ -3,10 +3,11 @@
 # - Relevant S3 Buckets
 
 resource "aws_amplify_app" "amplify_app" {
-  count                    = var.create_amplify_app ? 1 : 0
-  name                     = var.app_name
-  repository               = var.github_repository_url
-  enable_branch_auto_build = true
+  count                         = var.create_amplify_app ? 1 : 0
+  name                          = var.app_name
+  repository                    = var.github_repository_url
+  enable_branch_auto_build      = true
+  auto_branch_creation_patterns = ["dev"]
 
   # used for GitHub repos
   access_token = var.github_access_token // needed for accessing github repo
@@ -17,19 +18,19 @@ resource "aws_amplify_app" "amplify_app" {
   # The rewrite makes it appear to the user that they have arrived at the original address
   custom_rule {
     source    = "/<*>"
-    status    = "200"
+    status    = "404"
     target    = "/index.html"
     condition = null
   }
 }
 
-resource "aws_amplify_branch" "amplify_branch_dev" {
-  count       = var.create_amplify_branch_dev ? 1 : 0
-  app_id      = aws_amplify_app.amplify_app[0].id
-  branch_name = var.amplify_branch_dev_name
-  stage       = var.amplify_branch_dev_stage
+# resource "aws_amplify_branch" "amplify_branch_dev" {
+#   count       = var.create_amplify_branch_dev ? 1 : 0
+#   app_id      = aws_amplify_app.amplify_app[0].id
+#   branch_name = var.amplify_branch_dev_name
+#   stage       = var.amplify_branch_dev_stage
 
-  environment_variables = {
-    ENV = "dev"
-  }
-}
+#   environment_variables = {
+#     ENV = "dev"
+#   }
+# }
