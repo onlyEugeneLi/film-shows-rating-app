@@ -47,11 +47,15 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 
 ## Next steps
 
-Fix: AWS Amplify does not pick up HTML content from GitHub repo
+- Use [Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258) to set up the backend infrastructure and use CD pipeline to automate Terraform deployment
 
-Use CD pipeline to manage S3 backend bucket for Terraform state
+- Set up Destroy CD pipeline with parameters 
 
-Test connection between API Gateway and Lambda function, DynamoDB table
+- Fix: AWS Amplify does not pick up HTML content from GitHub repo
+
+- Test connection between API Gateway and Lambda function, DynamoDB table
+
+---
 
 **Configuration Directory Structure**
 ```
