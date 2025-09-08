@@ -6,6 +6,7 @@ module "web-app" {
   github_access_token = var.github_access_token
 }
 
+# Configure terraform environment
 # Set up S3 backend for Terraform state
 terraform {
   required_version = "~> 1.12"
