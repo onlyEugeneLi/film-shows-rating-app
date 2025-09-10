@@ -15,9 +15,11 @@ resource "aws_kms_alias" "bootstrap_s3_bucket_kms_key_alias" {
 # create state-files S3 buket 
 resource "aws_s3_bucket" "bootstrap_s3_bucket" {  
   bucket = var.s3_bucket_name
-
+  
+  # Prevent s3 bucket from being destroyed by Terraform
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = true 
+    // if needed to be removed, change to false here
   }
 }
 
