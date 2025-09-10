@@ -17,5 +17,10 @@ variable "s3_bucket_name" {
     type = string
 }
 
+variable "bootstrap_s3_bucket_kms_key_alias" {
+  description = "Set the alias (name) of the KMS key"
+  type = string
+}
+
 # --------- S3 variables: end  --------- #
 

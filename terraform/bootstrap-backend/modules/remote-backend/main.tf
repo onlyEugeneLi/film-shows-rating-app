@@ -1,8 +1,15 @@
 # --------- S3 resource: start --------- #
 
+# KMS key
 resource "aws_kms_key" "bootstrap_s3_bucket_kms_key" {
   description             = "This key is used to encrypt bucket objects"
   deletion_window_in_days = 10
+}
+
+# Set alias for KMS key resource
+resource "aws_kms_alias" "bootstrap_s3_bucket_kms_key_alias" {
+  name = var.bootstrap_s3_bucket_kms_key_alias
+  target_key_id = aws_kms_key.bootstrap_s3_bucket_kms_key.key_id
 }
 
 # create state-files S3 buket 
