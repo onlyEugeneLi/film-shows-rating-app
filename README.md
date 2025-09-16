@@ -47,10 +47,10 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 
 ## Next steps
 
-- Use [Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258) to set up the backend infrastructure and use CD pipeline to automate Terraform deployment
-  - Modify terraform directory hierarchy so backend setup is separate from main configuration
-  - terraform/modules: web-app and backend
-  - terraform/web-app: app deployment
+- 🔁 Use [Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258) to set up the backend infrastructure and use CD pipeline to automate Terraform deployment
+  - ✅ Modify terraform directory hierarchy so backend setup is separate from main configuration
+    - terraform/modules: web-app and backend
+    - terraform/web-app: app deployment
   - terraform/bootstrapping-backend: s3 bucket and dynamodb table for state locking
 
 - Set up Destroy CD pipeline with parameters
