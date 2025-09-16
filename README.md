@@ -51,7 +51,7 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
   - ✅ Modify terraform directory hierarchy so backend setup is separate from main configuration
     - terraform/modules: web-app and backend
     - terraform/web-app: app deployment
-  - terraform/bootstrapping-backend: s3 bucket and dynamodb table for state locking
+  - ✅ terraform/bootstrapping-backend: s3 bucket and dynamodb table for state locking
 
 - Set up Destroy CD pipeline with parameters
   - Need to set up permission to run terraform from GitHub Action CD pipeline
