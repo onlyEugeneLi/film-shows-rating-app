@@ -1,4 +1,6 @@
-# --------- Global variables: start --------- #
+# ============================================= #
+# ---------  Global variables: START  --------- #
+
 
 variable "aws_region" {
   description = "Enter AWS region"
@@ -6,12 +8,13 @@ variable "aws_region" {
   default     = ""
 }
 
-# --------- Global variables: end --------- #
+# ---------   Global variables: END   --------- #
+#################################################
 
 
 
-
-# --------- S3 variables: start --------- #
+# ============================================= #
+# ---------          S3: START        --------- #
 
 variable "s3_bucket_name" {
   description = "Name the AWS S3 bucket for remote backend state storage"
@@ -23,4 +26,19 @@ variable "kms_key_alias" {
   type        = string
 }
 
-# --------- S3 variables: end  --------- #
+# ---------          S3: END          --------- #
+#################################################
+
+
+
+# ============================================= #
+# ---------       DynamoDB: START     --------- #
+
+
+variable "dynamobd_table_name" {
+  type = string
+}
+
+
+# ---------       DynamoDB: END       --------- #
+#################################################
