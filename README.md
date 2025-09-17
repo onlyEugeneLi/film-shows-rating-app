@@ -89,6 +89,8 @@ References:
 
 [Solving the Terraform Backend Chicken-and-Egg Problem](https://cloudchronicles.blog/blog/Solving-the-Terraform-Backend-Chicken-and-Egg-Problem/)
 
+[Enabling State Locking via S3](https://developer.hashicorp.com/terraform/language/backend/s3#enabling-s3-state-locking)
+
 ## Amplify App
 
 Github repo link
