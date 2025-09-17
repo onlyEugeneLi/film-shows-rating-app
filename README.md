@@ -77,6 +77,18 @@ terraform/
         |--- lambda.tf
 ```
 
+## Terraform Remote Backend Setup
+
+References: 
+
+[Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258)
+
+[Migrating Terraform State Between Backends: A Simple Guide](https://terrateam.io/blog/migrating-terraform-state-between-backends#:~:text=be%20stored%20here.-,Scenario%202%3A%20Migrating%20Terraform%20State%20from%20Remote%20Backend%20to%20Local%20Setup,-In%20this%20scenario)
+- Migrating from Local to Remote
+- Migrating from Remote to Local
+
+[Solving the Terraform Backend Chicken-and-Egg Problem](https://cloudchronicles.blog/blog/Solving-the-Terraform-Backend-Chicken-and-Egg-Problem/)
+
 ## Amplify App
 
 Github repo link
