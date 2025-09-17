@@ -9,16 +9,21 @@ module "web-app" {
 # Configure terraform environment
 # Set up S3 backend for Terraform state
 terraform {
+
   required_version = "~> 1.12"
-  # # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
-  #   backend "s3" {
-  #     bucket          = "app-tf-backend-bucket-55637"
-  #     key             = "state/terraform.tfstate" # directory path
-  #     region          = "us-east-2"
-  #     # dynamodb_table  = "backend" # Deprecated
-  #     use_lockfile    = true
-  #     encrypt         = true
-  #   }
+
+
+  # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
+    backend "s3" {
+      bucket          = "s3-web-app-tf-remote-backend-bucket"
+      key             = "state/terraform.tfstate" # directory path
+      region          = "us-east-2"
+      dynamodb_table  = "dynamodb-web-app-tf-state-locking-table" # Deprecated
+      # use_lockfile    = true
+      encrypt         = true
+    }
+
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
