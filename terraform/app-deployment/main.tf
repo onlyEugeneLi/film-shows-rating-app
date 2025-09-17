@@ -18,8 +18,8 @@ terraform {
       bucket          = "s3-web-app-tf-remote-backend-bucket"
       key             = "state/terraform.tfstate" # directory path
       region          = "us-east-2"
-      dynamodb_table  = "dynamodb-web-app-tf-state-locking-table" # Deprecated
-      # use_lockfile    = true
+      # dynamodb_table  = "dynamodb-web-app-tf-state-locking-table" # Deprecated - will be made unavailable by Terraform in the future
+      use_lockfile    = true # Recommended by Terraform - Enable state locking via S3
       encrypt         = true
     }
 
