@@ -43,5 +43,3 @@ resource "aws_dynamodb_table" "dynamodb-table" {
     name = "film-tracker-app-table"
   }
 }
-
-# Next: State locking
