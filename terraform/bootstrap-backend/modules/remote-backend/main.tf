@@ -10,23 +10,23 @@ resource "aws_kms_key" "bootstrap_s3_bucket_kms_key" {
 
 # Set alias for KMS key resource
 resource "aws_kms_alias" "bootstrap_s3_bucket_kms_key_alias" {
-  name = var.bootstrap_s3_bucket_kms_key_alias
+  name          = var.bootstrap_s3_bucket_kms_key_alias
   target_key_id = aws_kms_key.bootstrap_s3_bucket_kms_key.key_id
 }
 
 # create state-files S3 buket 
-resource "aws_s3_bucket" "bootstrap_s3_bucket" {  
+resource "aws_s3_bucket" "bootstrap_s3_bucket" {
   bucket = var.s3_bucket_name
-  
+
   # Prevent s3 bucket from being destroyed by Terraform
   lifecycle {
-    prevent_destroy = true 
+    prevent_destroy = true
     // if needed to be removed, change to false here
   }
 }
 
 # enable S3 bucket versioning
-resource "aws_s3_bucket_versioning" "bootstrap_s3_bucket_versioning" { 
+resource "aws_s3_bucket_versioning" "bootstrap_s3_bucket_versioning" {
   bucket = aws_s3_bucket.bootstrap_s3_bucket.id
   versioning_configuration {
     status = "Enabled"
@@ -40,7 +40,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bootstrap_s3_buck
   rule {
     apply_server_side_encryption_by_default {
       kms_master_key_id = aws_kms_key.bootstrap_s3_bucket_kms_key.arn
-      sse_algorithm = "aws:kms"
+      sse_algorithm     = "aws:kms"
     }
     bucket_key_enabled = true
   }
@@ -66,9 +66,9 @@ resource "aws_s3_bucket_public_access_block" "bootstrap_s3_bucket_acl" {
 # ---------       DynamoDB: START     --------- #
 
 resource "aws_dynamodb_table" "bootstrap_dynamodb_table" {
-  name = var.dynamobd_table_name
+  name         = var.dynamobd_table_name
   billing_mode = "PAY_PER_REQUEST"
-  hash_key = "LockID"
+  hash_key     = "LockID"
   attribute {
     name = "LockID"
     type = "S"
