@@ -47,12 +47,11 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 
 ## Next steps
 
-- Use [Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258) to set up the backend infrastructure and use CD pipeline to automate Terraform deployment
-  - ✅Modify terraform directory hierarchy so backend setup is separate from main configuration
-  - ✅terraform/modules: web-app and backend
-  - ✅terraform/web-app: app deployment
-  - terraform/bootstrapping-backend: s3 bucket and dynamodb table for state locking
-    - 📈Finish dynamodb table setup for state locking
+- 🔁 Use [Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258) to set up the backend infrastructure and use CD pipeline to automate Terraform deployment
+  - ✅ Modify terraform directory hierarchy so backend setup is separate from main configuration
+    - terraform/modules: web-app and backend
+    - terraform/web-app: app deployment
+  - ✅ terraform/bootstrapping-backend: s3 bucket and dynamodb table for state locking
 
 - Set up Destroy CD pipeline with parameters
   - Need to set up permission to run terraform from GitHub Action CD pipeline
@@ -77,6 +76,20 @@ terraform/
         |--- iam.tf
         |--- lambda.tf
 ```
+
+## Terraform Remote Backend Setup
+
+References: 
+
+[Bootstrapping method with Makefile](https://medium.com/@owumifestus/automating-terraform-backend-setup-bootstrapping-s3-and-dynamodb-state-aa2d2070e258)
+
+[Migrating Terraform State Between Backends: A Simple Guide](https://terrateam.io/blog/migrating-terraform-state-between-backends#:~:text=be%20stored%20here.-,Scenario%202%3A%20Migrating%20Terraform%20State%20from%20Remote%20Backend%20to%20Local%20Setup,-In%20this%20scenario)
+- Migrating from Local to Remote
+- Migrating from Remote to Local
+
+[Solving the Terraform Backend Chicken-and-Egg Problem](https://cloudchronicles.blog/blog/Solving-the-Terraform-Backend-Chicken-and-Egg-Problem/)
+
+[Enabling State Locking via S3](https://developer.hashicorp.com/terraform/language/backend/s3#enabling-s3-state-locking)
 
 ## Amplify App
 
