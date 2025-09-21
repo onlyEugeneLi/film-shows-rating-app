@@ -21,10 +21,10 @@ variable "s3_bucket_name" {
   type        = string
 }
 
-variable "bootstrap_s3_bucket_kms_key_alias" {
-  description = "Set the alias (name) of the KMS key"
-  type        = string
-}
+# variable "bootstrap_s3_bucket_kms_key_alias" {
+#   description = "Set the alias (name) of the KMS key"
+#   type        = string
+# }
 
 # ---------          S3: END          --------- #
 #################################################
@@ -34,9 +34,9 @@ variable "bootstrap_s3_bucket_kms_key_alias" {
 # ---------       DynamoDB: START     --------- #
 
 
-variable "dynamobd_table_name" {
-  type = string
-}
+# variable "dynamobd_table_name" {
+#   type = string
+# }
 
 
 # ---------       DynamoDB: END       --------- #

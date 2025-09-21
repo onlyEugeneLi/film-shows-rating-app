@@ -21,10 +21,10 @@ variable "s3_bucket_name" {
   type        = string
 }
 
-variable "kms_key_alias" {
-  description = "Set the alias (name) of the KMS key. The name must start with 'alias/'"
-  type        = string
-}
+# variable "kms_key_alias" {
+#   description = "Set the alias (name) of the KMS key. The name must start with 'alias/'"
+#   type        = string
+# }
 
 # ---------          S3: END          --------- #
 #################################################
@@ -35,9 +35,9 @@ variable "kms_key_alias" {
 # ---------       DynamoDB: START     --------- #
 
 
-variable "dynamobd_table_name" {
-  type = string
-}
+# variable "dynamobd_table_name" {
+#   type = string
+# }
 
 
 # ---------       DynamoDB: END       --------- #
