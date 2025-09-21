@@ -40,7 +40,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bootstrap_s3_buck
   rule {
     apply_server_side_encryption_by_default {
       # kms_master_key_id = aws_kms_key.bootstrap_s3_bucket_kms_key.arn # Only required if `sse_algorithm` is "aws:kms"
-      sse_algorithm     = "aes256" # "aws:kms"
+      sse_algorithm     = "AES256" # "aws:kms"
     }
     bucket_key_enabled = true
   }
