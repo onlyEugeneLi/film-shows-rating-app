@@ -15,7 +15,6 @@ jobs:
   print_message:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Print environment
-        run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
-      - name: Wrapping up
-        run: echo "The workflow is completed."
+        run: ./scripts/print_message.sh
