@@ -1,0 +1,19 @@
+name: GitHub Action Practice Job
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Enter the environment where the code is being deployed"
+        required: true
+        default: "production"
+
+jobs:
+  print_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print environment
+        run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
+      - name: Wrapping up
+        run: echo "\n\nThe workflow is completed."
+      
