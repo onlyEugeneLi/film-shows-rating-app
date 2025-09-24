@@ -7,9 +7,9 @@ on:
         description: "Enter the environment where the code is being deployed"
         required: true
         default: "production"
-  push:
-    branches:
-      - "cd/set_up_pipeline"
+  # push:
+  #   branches:
+  #     - "cd/set_up_pipeline"
 
 jobs:
   print_message:
@@ -18,5 +18,4 @@ jobs:
       - name: Print environment
         run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
       - name: Wrapping up
-        run: echo "\n\nThe workflow is completed."
-      
+        run: echo "The workflow is completed."
