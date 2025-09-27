@@ -46,7 +46,7 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 *.zip
-/web-form-template
+*/web-form-template
 *.json
 
 github-fine-grained-token.txt
