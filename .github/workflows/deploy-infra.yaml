@@ -1,3 +1,87 @@
+name: Deploy web app infra
+# Objective: Automate Terraform managed infrastructure deployment
+
 # Automation steps
 # 1. Set up remote state resource if it doesn't exist
 # 2. Deploy main resource
+
+# Trigger strategy
+on:
+  push:
+    branches: 
+      - cd/tf_deploy  
+  workflow_dispatch:           # Manual trigger
+
+env: 
+  WORKING_DIRECTORY: './terraform/app-deployment'
+  TF_VERSION: ${{secrets.TF_VERSION}}
+
+jobs:
+  deploy:
+    name: Infrastruction deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Verify AWS connection
+        run: |
+          echo "Testing AWS connectivity..."
+          aws sts get-caller-identity
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          
+      - name: Terraform Init
+        id: init
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          terraform init
+
+      - name: Terraform Format Check
+        id: fmt
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Terraform Validate
+        id: validate
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          terraform plan \
+            -var="github_access_token=${{ secrets.AWS_AMPLIFY_GITHUB_ACCESS_TOKEN }}" \
+            -out=tfplan \
+            -no-color
+
+      - name: Terraform Apply
+        if: github.event_name != 'pull_request'
+        id: apply
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          terraform apply \
+            -var="github_access_token=${{ secrets.AWS_AMPLIFY_GITHUB_ACCESS_TOKEN }}" \
+            -auto-approve \
+            -input=false \
+            tfplan
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "### ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Failed Step:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
