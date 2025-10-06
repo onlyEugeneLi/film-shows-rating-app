@@ -76,6 +76,7 @@ jobs:
       - name: Force Unlock Terraform State
         working-directory: './terraform/app-deployment'
         run: terraform force-unlock -force 04c89193-554c-3188-bad2-d75e36d614fd
+        continue-on-error: true
 
       - name: Terraform Plan Destroy (App)
         id: plan-destroy
