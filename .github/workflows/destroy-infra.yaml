@@ -1,0 +1,194 @@
+name: Destroy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type "destroy" to confirm'
+        required: true
+        type: string
+      destroy_bootstrap:
+        description: 'Also destroy bootstrap (S3 backend)?'
+        required: true
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+        default: 'false'
+
+env:
+  AWS_REGION: 'us-east-2'
+  TF_VERSION: '1.12.0'
+  APP_DIR: './terraform/app-deployment'
+  BOOTSTRAP_DIR: './terraform/bootstrap-backend'
+
+jobs:
+  validate-destroy:
+    name: Validate Destroy Request
+    runs-on: ubuntu-latest
+    
+    outputs:
+      proceed: ${{ steps.validate.outputs.proceed }}
+    
+    steps:
+      - name: Validate confirmation
+        id: validate
+        run: |
+          if [ "${{ github.event.inputs.confirmation }}" != "destroy" ]; then
+            echo "::error::Confirmation failed. You must type 'destroy' exactly."
+            exit 1
+          fi
+          
+          echo "proceed=true" >> $GITHUB_OUTPUT
+          echo "✅ Confirmation validated"
+
+  destroy-app:
+    name: Destroy App Infrastructure
+    runs-on: ubuntu-latest
+    needs: validate-destroy
+    
+    permissions:
+      contents: read
+      issues: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Init (App)
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          terraform init
+
+      - name: Terraform Plan Destroy (App)
+        id: plan-destroy
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          terraform plan \
+            -destroy \
+            -out=destroy.tfplan \
+            -no-color
+
+      - name: Show Destroy Plan
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          echo "### 🗑️ Resources to be DESTROYED:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          terraform show destroy.tfplan >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Terraform Destroy (App)
+        id: destroy-app
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          terraform apply -auto-approve destroy.tfplan
+
+      - name: App Destroy Summary
+        if: success()
+        run: |
+          echo "### ✅ App Infrastructure Destroyed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Destroyed by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+  destroy-bootstrap:
+    name: Destroy Bootstrap (S3 Backend)
+    runs-on: ubuntu-latest
+    needs: destroy-app
+    if: github.event.inputs.destroy_bootstrap == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Warning - Bootstrap Destruction
+        run: |
+          echo "::warning::🚨 DESTROYING TERRAFORM STATE BACKEND"
+          echo "This will delete the S3 bucket containing Terraform state!"
+          echo "Make sure all environment states have been destroyed first."
+          sleep 5
+
+      - name: Empty S3 bucket before destroy
+        run: |
+          echo "Emptying S3 bucket: ${{ secrets.TF_STATE_BUCKET_NAME }}"
+          aws s3 rm s3://${{ secrets.TF_STATE_BUCKET_NAME }} --recursive || true
+
+      - name: Terraform Init (Bootstrap)
+        working-directory: ${{ env.BOOTSTRAP_DIR }}
+        run: |
+          # Bootstrap uses local backend initially
+          terraform init
+
+      - name: Terraform Destroy (Bootstrap)
+        id: destroy-bootstrap
+        working-directory: ${{ env.BOOTSTRAP_DIR }}
+        run: |
+          terraform destroy -auto-approve
+
+      - name: Bootstrap Destroy Summary
+        if: success()
+        run: |
+          echo "### ✅ Bootstrap Infrastructure Destroyed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**S3 Bucket:** ${{ secrets.TF_STATE_BUCKET_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Destroyed by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ You will need to run bootstrap again before deploying." >> $GITHUB_STEP_SUMMARY
+
+  notify-completion:
+    name: Notify Completion
+    runs-on: ubuntu-latest
+    needs: [destroy-app, destroy-bootstrap]
+    if: always()
+    
+    steps:
+      - name: Final Summary
+        run: |
+          echo "## 🗑️ Destruction Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**App Destroyed:** ✅" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event.inputs.destroy_bootstrap }}" == "true" ]; then
+            echo "**Bootstrap Destroyed:** ✅" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Bootstrap Destroyed:** ⏭️ Skipped" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*All infrastructure has been removed from AWS.*" >> $GITHUB_STEP_SUMMARY
+
+      - name: Handle Failures
+        if: failure()
+        run: |
+          echo "## ❌ Destruction Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Some resources may still exist in AWS." >> $GITHUB_STEP_SUMMARY
+          echo "Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "You may need to manually clean up resources." >> $GITHUB_STEP_SUMMARY
