@@ -7,9 +7,9 @@ name: Deploy web app infra
 
 # Trigger strategy
 on:
-  push:
-    branches: 
-      - cd/tf_deploy  
+  # push:
+  #   branches: 
+  #     - cd/tf_deploy  
   workflow_dispatch:           # Manual trigger
 
 env: 
