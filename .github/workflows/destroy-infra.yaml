@@ -100,8 +100,7 @@ jobs:
         id: destroy-app
         working-directory: ${{ env.APP_DIR }}
         run: |
-          terraform apply -auto-approve destroy.tfplan \
-          -var github_access_token=${{ secrets.AWS_AMPLIFY_GITHUB_ACCESS_TOKEN }}
+          terraform apply -auto-approve destroy.tfplan
 
       - name: App Destroy Summary
         if: success()
