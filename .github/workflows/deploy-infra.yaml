@@ -51,7 +51,7 @@ jobs:
           terraform init \
             -backend-config="bucket=$S3_REMOTE_BACKEND_BUCKET_NAME" \
             -backend-config="key=$S3_BACKEND_PATH" \
-            -backend-config="region=$AWS_REGION
+            -backend-config="region=$AWS_REGION"
 
       - name: Terraform Format Check
         id: fmt
