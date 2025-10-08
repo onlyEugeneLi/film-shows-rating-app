@@ -15,10 +15,9 @@ terraform {
 
   # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
   backend "s3" {
-    bucket = "s3-web-app-tf-remote-backend-bucket"
-    key    = "state/terraform.tfstate" # directory path
-    region = "us-east-2"
-    # dynamodb_table  = "dynamodb-web-app-tf-state-locking-table" # Deprecated - will be made unavailable by Terraform in the future
+    bucket = var.s3_remote_backend_bucket_name
+    key    = var.s3_backend_path # directory path
+    region = var.aws_region
     use_lockfile = true # Recommended by Terraform - Enable state locking via S3
     encrypt      = true
   }
