@@ -19,7 +19,7 @@ env:
 
 jobs:
   deploy:
-    name: Infrastruction deployment
+    name: Deploy terraform infra
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
