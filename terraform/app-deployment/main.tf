@@ -15,9 +15,9 @@ terraform {
 
   # S3 Backend configuration (Uncomment after S3 bucket provision, run just `terraform init`)
   backend "s3" {
-    bucket       = var.s3_remote_backend_bucket_name
-    key          = var.s3_backend_path # directory path
-    region       = var.aws_region
+    # bucket       = var.s3_remote_backend_bucket_name
+    # key          = var.s3_backend_path # directory path
+    # region       = var.aws_region
     use_lockfile = true # Recommended by Terraform - Enable state locking via S3
     encrypt      = true
   }
