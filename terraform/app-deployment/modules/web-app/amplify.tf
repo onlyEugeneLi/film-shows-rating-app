@@ -57,3 +57,12 @@ resource "aws_amplify_branch" "dev" {
     Branch = var.amplify_branch_dev_name
   }
 }
+
+# Auto-build trigger on specified branch
+resource "null_resource" "trigger_fix_build" {
+  depends_on = [aws_amplify_branch.dev]
+
+  provisioner "local-exec" {
+    command = "aws amplify start-job --app-id ${aws_amplify_app.amplify_app[0].id} --branch-name fix/amplify-index-detection --job-type RELEASE --region us-east-2"
+  }
+}
