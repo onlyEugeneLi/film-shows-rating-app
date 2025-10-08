@@ -15,6 +15,11 @@ variable "amplify_app_framework" {
   default     = "Web"
   description = "Framework for the app"
 }
+variable "aws_waf_region" {
+  description = "Amplify WAF can only be set up in us-east-1 region"
+  type = string
+  default = "us-east-1"
+}
 
 # Github access
 variable "github_repository_url" {
