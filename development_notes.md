@@ -26,22 +26,27 @@ AWS IAM: permissions — give AWS Lambda function permissions to write AWS Dynam
 
 # Next steps
 
-[Amplify Web form App HTML](https://www.youtube.com/watch?v=7m_q1ldzw0U)
-
-[AWS Blog - Web contact form deployment in Serverless Architecture](https://aws.amazon.com/blogs/architecture/create-dynamic-contact-forms-for-s3-static-websites-using-aws-lambda-amazon-api-gateway-and-amazon-ses/)
-
-[Terraform deployment code example](https://github.com/novekm/amazon-transcribe-call-analytics-quickstart/tree/main/terraform-deployment)
-
+1. Remove hardcoded API Gateway URL in HTML JS code and replace with Terraform output variable
+1. Test connection between API Gateway and Lambda function, DynamoDB table
+1. Set up connection test for API Gateway to Lambda function, DynamoDB table in CD pipeline
+1. Set up testing framework for Lambda function
 1. ✅ Add html web form code
 1. ✅ Configure infrastructure (Amplify, DynamoDB, API gateway, roles, IAMs, cognito)
 1. ✅ Successful infra deployment
 1. ✅ Lambda function python API backend code
 1. ✅ Test run app
-1. CD pipeline: deploy code changes automatically
+1. ✅ CD pipeline: deploy code changes automatically
 1. EC2 Migration
 1. VPN access via home network only
 1. Add Chinese language webpage and link to switch between languages
 
+References: 
+
+[Amplify Web form App HTML](https://www.youtube.com/watch?v=7m_q1ldzw0U)
+
+[AWS Blog - Web contact form deployment in Serverless Architecture](https://aws.amazon.com/blogs/architecture/create-dynamic-contact-forms-for-s3-static-websites-using-aws-lambda-amazon-api-gateway-and-amazon-ses/)
+
+[Terraform deployment code example](https://github.com/novekm/amazon-transcribe-call-analytics-quickstart/tree/main/terraform-deployment)
 
 # Terraform configurations
 

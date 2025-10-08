@@ -3,13 +3,12 @@ frontend:
   phases:
     build:
       commands: 
-        - ""
+        - echo "No build required for static site"
 
   artifacts:
-    baseDirectory: /
+    baseDirectory: /frontend
     files:
-      # - '**/*' # All files
-      - index.html
+      - '**/*' # All files
   
   cache:
     paths: []
