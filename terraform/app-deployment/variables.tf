@@ -1,5 +1,5 @@
 variable "aws_region" {
-  type    = string
+  type = string
 }
 
 # dummy variable to take input in the command line
