@@ -7,9 +7,9 @@ name: Deploy web app infra
 
 # Trigger strategy
 on:
-  push:
-    branches: 
-      - fix/amplify-index-detection  
+  # push:
+  #   branches: 
+      # - fix/amplify-index-detection  
   workflow_dispatch:           # Manual trigger
 
 env: 
