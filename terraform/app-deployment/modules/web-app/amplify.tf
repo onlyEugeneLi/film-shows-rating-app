@@ -60,6 +60,7 @@ resource "aws_amplify_branch" "dev" {
 
 # Enable Web Application Firewall (WAF)
 resource "aws_wafv2_web_acl" "amplify_waf" {
+  region = aws.aws_waf_region
   name  = "amplify-app-waf"
   scope = "REGIONAL"
 
@@ -149,6 +150,7 @@ resource "aws_wafv2_web_acl" "amplify_waf" {
 
 # Associate WAF with Amplify App
 resource "aws_wafv2_web_acl_association" "amplify_waf_association" {
+  region = aws.aws_waf_region
   resource_arn = aws_amplify_app.amplify_app[0].arn
   web_acl_arn  = aws_wafv2_web_acl.amplify_waf.arn
 }
