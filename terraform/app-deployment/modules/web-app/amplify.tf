@@ -28,7 +28,7 @@ resource "aws_amplify_app" "amplify_app" {
   }
 
   tags = {
-    Name        = "Static Website"
+    Name        = "Film Rating Web App"
     Environment = "Production"
   }
 }
@@ -36,7 +36,7 @@ resource "aws_amplify_app" "amplify_app" {
 # PROD branch: main
 resource "aws_amplify_branch" "main" {
   count             = var.create_amplify_branch_prod ? 1 : 0
-  app_id            = aws_amplify_app.amplify_app.id
+  app_id            = aws_amplify_app.amplify_app[0].id
   branch_name       = var.amplify_branch_prod_name
   stage             = var.amplify_branch_prod_stage
   enable_auto_build = true
@@ -48,7 +48,7 @@ resource "aws_amplify_branch" "main" {
 # DEV branch: fix/amplify-index-detection
 resource "aws_amplify_branch" "dev" {
   count             = var.create_amplify_branch_dev ? 1 : 0
-  app_id            = aws_amplify_app.amplify_app.id
+  app_id            = aws_amplify_app.amplify_app[0].id
   branch_name       = var.amplify_branch_dev_name
   stage             = var.amplify_branch_dev_stage
   enable_auto_build = true
@@ -149,6 +149,6 @@ resource "aws_wafv2_web_acl" "amplify_waf" {
 
 # Associate WAF with Amplify App
 resource "aws_wafv2_web_acl_association" "amplify_waf_association" {
-  resource_arn = aws_amplify_app.static_website.arn
+  resource_arn = aws_amplify_app.amplify_app[0].arn
   web_acl_arn  = aws_wafv2_web_acl.amplify_waf.arn
 }
