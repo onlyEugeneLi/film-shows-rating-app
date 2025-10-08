@@ -6,10 +6,10 @@ frontend:
         - ""
 
   artifacts:
-    baseDirectory: /
+    baseDirectory: frontend
     files:
-      # - '**/*' # All files
-      - index.html
+      - '**/*' # All files
+      # - index.html
   
   cache:
     paths: []
