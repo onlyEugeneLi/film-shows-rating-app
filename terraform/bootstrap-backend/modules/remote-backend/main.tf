@@ -17,10 +17,11 @@
 # create state-files S3 buket 
 resource "aws_s3_bucket" "bootstrap_s3_bucket" {
   bucket = var.s3_bucket_name
+  # force_destroy = true # Set this true if you're running "terraform destroy"
 
   # Prevent s3 bucket from being destroyed by Terraform
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false # Set this false if you're running "terraform destroy"
     // if needed to be removed, change to false here
   }
 }
